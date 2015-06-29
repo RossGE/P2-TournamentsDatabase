@@ -82,7 +82,9 @@ def registerPlayer(argPlayerName, argTournamentName=0):
         - Optionally pass argTournamentName to register a player to a specific tournament 
     """
     db, cursor = connectOpen()
-    cursor.execute("INSERT INTO players (player_name) VALUES (%s) RETURNING player_id;", (argPlayerName, ))
+    cursor.execute("INSERT INTO players (player_name) VALUES (%s) RETURNING player_id;", 
+        (argPlayerName, )
+    )
 
     """Get serial ID of newly created player"""
     newPlayerID = cursor.fetchone()[0]
@@ -92,7 +94,9 @@ def registerPlayer(argPlayerName, argTournamentName=0):
 	"""Get tournament ID from tournaments table for insert into registrations table"""
         cursor.execute("SELECT tournament_id FROM tournaments WHERE tournament_name = %s", (argTournamentName, ))
         tournamentID = cursor.fetchone()[0]        
-        cursor.execute("INSERT INTO tournament_registrations VALUES (%s, %s);", (tournamentID, newPlayerID))
+        cursor.execute("INSERT INTO tournament_registrations VALUES (%s, %s);", 
+	        (tournamentID, newPlayerID)
+	    )
 
     db.commit()
     db.close()
@@ -103,11 +107,12 @@ def registerTournament(argTournamentName):
     The database assigns a unique serial id number for the tournament
 
     Arguments:
-        - Name: the name of the tournament
+        - argTournamentName: the name of the tournament
 
     Returns:
         - Count of 1 to indicate the tournament has been created successfully
-        - ID of the tournament - this needs to be passed to the match / pairing functions later
+        - ID of the tournament - this needs to be passed to the 
+		match / pairing functions later
     """
     db, cursor = connectOpen()
     cursor.execute("INSERT INTO tournaments (tournament_name) VALUES (%s) RETURNING tournament_id;", 
@@ -153,7 +158,8 @@ def reportMatch(tournament, player1, player2):
 
     Args:
       tournament: the id of the tournament this match is for
-      player1:  the id number of the first player (this will be the winner in the _test.py)
+      player1:  the id number of the first player 
+	            (this will be the winner in the _test.py script)
       player2:  the id number of the second player
     """
 
@@ -206,11 +212,15 @@ def swissPairings():
     """Loop over standing results two records at a time"""
     matchPairs = []    
     for p in range(0, len(standingResults), 2):
-        """Set player1 to the first record in this pair, player2 to second record"""
+        """Set player1 to the first record in this pair, 
+		player2 to second record
+		"""
         player1 = standingResults[p]
         player2 = standingResults[p + 1]
         
-        """Create paired list of tuples (note: col 0 is id, col 1 is name - see playerStandings()"""
+        """Create paired list of tuples 
+		(note: col 0 is id, col 1 is name - see playerStandings()
+		"""
         matchPairs.append(
             [player1[0],
             player1[1],
