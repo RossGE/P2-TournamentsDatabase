@@ -17,17 +17,10 @@ The following files are included in this project:
 - Python 2.7.6
 
 ## Installation
-Using the psql client, create a database called "tournament":
+Install the tournament.sql file to postgre:
 
 ```bash
-vagrant=> CREATE DATABASE tournament;
-CREATE DATABASE
-```
-
-Then run the tournament.sql file using the \i switch:
-
-```bash
-vagrant=> \i tournament.sql
+psql -f tournament.sql
 ```
 
 ## Execution

@@ -7,6 +7,16 @@
 --	= Assumption that there are no ties, one winner and one loser per match
 --	= Players are either the "home" or "away" player each match
 --	= Strive for high normalization to reduce data redundancy
+-- 
+-- Resubmission Notes:
+-- 	= Added DROP DATABASE IF EXISTS
+--	= Added primary key to tournament_registrations
+--	= Didn't change MATCHES to a view as suggested:
+--	  - Need this to be a table as it actually defines the match pairings
+--	  - I did this as I wanted the structure to be able to handle scheduled matches without results yet in future
+
+-- Drop the database if it already exists
+DROP DATABASE IF EXISTS tournament;
 
 -- Create and connect to the tournament database
 CREATE DATABASE tournament;
@@ -26,6 +36,7 @@ CREATE TABLE players (
 
 -- Players registered to each tournament
 CREATE TABLE tournament_registrations (
+	registration_id SERIAL PRIMARY KEY,
         tournament_id INT REFERENCES tournaments(tournament_id),
         player_id INT REFERENCES players(player_id)
 );
